@@ -33,11 +33,15 @@ app.use(express.json());
 // start the apollo server with schema
 const startApolloServer = async (typeDefs, resolvers) => {
   await server.start();
-}
+  // make the Apollo server a piece of middleware
+  // that we can integrate into Express
+  server.applyMiddleware ({ app });
+};
 
-// make the Apollo server a piece of middleware
-// that we can integrate into Express
-server.applyMiddleware ({ app });
+// invoke apollo server function
+startApolloServer(typeDefs, resolvers);
+
+
 
 
 // invoke mongoose connection
@@ -49,5 +53,4 @@ db.once('open', () => {
 
 
 
-// invoke apollo server function
-startApolloServer(typeDefs, resolvers);
+
