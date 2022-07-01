@@ -87,6 +87,59 @@ const resolvers = {
             const token = signToken(user);
 
             return {token, user};
+        },
+
+        addThought: async (parent, args, context) => {
+            if (context.user) {
+
+              // use of spread operator ... to not lose rest of
+              // key value pair info in thought model
+              // we just take the username value from JWT
+              // and make that equal to the username property in Thought
+              const thought = await Thought.create({ ...args, username: context.user.username });
+          
+              // we add the Thought made by the user
+              // to the user model
+              await User.findByIdAndUpdate(
+                { _id: context.user._id },
+                { $push: { thoughts: thought._id } },
+                // remember new true will return the update User info
+                // not the old user info
+                { new: true }
+              );
+          
+              return thought;
+            }
+          
+            throw new AuthenticationError('You need to be logged in!');
+        },
+        addReaction: async (parent, { thoughtId, reactionBody }, context) => {
+            if (context.user) {
+              const updatedThought = await Thought.findOneAndUpdate(
+                { _id: thoughtId },
+                { $push: { reactions: { reactionBody, username: context.user.username } } },
+                { new: true, runValidators: true }
+              );
+          
+              return updatedThought;
+            }
+          
+            throw new AuthenticationError('You need to be logged in!');
+        },
+        addFriend: async (parent, { friendId }, context) => {
+            if (context.user) {
+              const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                // addToSet operator will prevent duplicates being added to array
+                // while push operator does not care about value being unique
+                { $addToSet: { friends: friendId } },
+                { new: true }
+              ).populate('friends');
+          
+              return updatedUser;
+            }
+          
+            throw new AuthenticationError('You need to be logged in!');
         }
     }
 };
