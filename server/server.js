@@ -9,6 +9,10 @@ const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
 
 
+// import auth middleware for JWT
+// pass it in as context for new server instance
+const { authMiddleware } = require('./utils/auth');
+
 
 // import mongoose database connection here
 const db = require('./config/connection');
@@ -19,7 +23,11 @@ const PORT = process.env.PORT || 3001;
 // create Apollo server and pass in schema
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  // pass in context for HTTP header
+  // we use our middleware to authenticate 
+  // the token before our resolver gets it
+  context: authMiddleware
 });
 
 

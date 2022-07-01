@@ -8,6 +8,12 @@ const { gql } = require('apollo-server-express');
 // reactions are a nested array in Thought
 // ! exclamation point means that data MUST exist
 // we define the User type and the Thought type
+// our new mutation has two functions: login and adduser
+// both function define their paramaters
+// they return User objects
+// the Auth type must return a token, can also include
+// other user data
+// have mutations return Auth object instead of user
 const typeDefs = gql`
 
     type User {
@@ -36,11 +42,22 @@ const typeDefs = gql`
     }
 
     type Query {
+        me: User
         users: [User]
         user(username: String!): User
         thoughts(username: String): [Thought]
         thought(_id: ID!): Thought
     }    
+
+    type Mutation {
+        login(email: String!, password: String!): Auth
+        addUser(username: String!, email: String!, password: String!): Auth
+    }
+
+    type Auth {
+        token: ID!
+        user: User
+    }
 `;
 
 // export the typeDefs
