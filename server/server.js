@@ -1,5 +1,9 @@
+
+
 const express = require('express');
 
+
+const path = require('path');
 
 // import ApolloServer connection
 const { ApolloServer } = require('apollo-server-express');
@@ -50,6 +54,23 @@ const startApolloServer = async (typeDefs, resolvers) => {
 startApolloServer(typeDefs, resolvers);
 
 
+//////////////////////////////////////////////////
+
+// these two expressions are important for production
+// serve up static assets
+// we check if the Node environment is in production
+// if so, we tell the app to use this path
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/public')));
+}
+// now we fetch the data from react's build directory
+// this is a wildcard GET request
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/public/index.html'));
+});
+
+
+///////////////////////////////////////////////////
 
 
 // invoke mongoose connection
