@@ -1,6 +1,10 @@
 // import function for decoding JWTs
 import decode from 'jwt-decode';
 
+
+//
+
+
 class AuthService {
     // retrieve data saved in token
   getProfile() {
