@@ -14,6 +14,17 @@ import Home from './pages/Home';
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
 
+// import react router functions for React pages
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+
+
+import Login from './pages/Login';
+import NoMatch from './pages/NoMatch';
+import SingleThought from './pages/SingleThought';
+import Profile from './pages/Profile';
+import Signup from './pages/Signup';
+
 
 // we will establish connection to /graphql endpoint
 const httpLink = createHttpLink({
@@ -31,17 +42,44 @@ const client = new ApolloClient({
 
 function App() {
   
-    return (
-      <ApolloProvider client={client}>
+  return (
+    <ApolloProvider client={client}>
+      <Router>
         <div className="flex-column justify-flex-start min-100-vh">
           <Header />
           <div className="container">
-            <Home />
+            <Routes>
+              <Route
+                path="/"
+                element={<Home />}
+              />
+              <Route
+                path="/login"
+                element={<Login />}
+              />
+              <Route
+                path="/signup"
+                element={<Signup />}
+              />
+              <Route path="/profile">
+                <Route path=":username" element={<Profile />} />
+                <Route path="" element={<Profile />} />
+              </Route>
+              <Route
+                path="/thought/:id"
+                element={<SingleThought />}
+              />
+              <Route
+                path="*"
+                element={<NoMatch />}
+              />
+            </Routes>
           </div>
           <Footer />
         </div>
-      </ApolloProvider>
-    );
+      </Router>
+    </ApolloProvider>
+  );
 }
 
 export default App;
