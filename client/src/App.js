@@ -31,7 +31,7 @@ import Signup from './pages/Signup';
 
 // we will establish connection to /graphql endpoint
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql'
+  uri: 'https://lit-dawn-68931.herokuapp.com/'
 });
 
 
