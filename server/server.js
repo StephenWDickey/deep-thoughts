@@ -61,7 +61,7 @@ startApolloServer(typeDefs, resolvers);
 // we check if the Node environment is in production
 // if so, we tell the app to use this path
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/public')));
+  app.use(express.static(path.join(__dirname, '../client/build')));
 }
 // now we fetch the data from react's build directory
 // this is a wildcard GET request
