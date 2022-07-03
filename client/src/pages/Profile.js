@@ -95,7 +95,7 @@ const Profile = () => {
           />
         </div>
       </div>
-      <div classNAme='mb-3'>{!userParam && <ThoughtForm/>}</div>
+      <div className='mb-3'>{!userParam && <ThoughtForm/>}</div>
     </div>
   );
 };
