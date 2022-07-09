@@ -65,6 +65,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 // now we fetch the data from react's build directory
 // this is a wildcard GET request
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
